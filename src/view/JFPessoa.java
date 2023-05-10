@@ -318,7 +318,7 @@ public class JFPessoa extends javax.swing.JFrame {
         String nome = pessoaS.getPessoaByDoc(cpf).getNome();
         Object[] btnMSG = {"Sim","Não"};
         int resp = JOptionPane.showOptionDialog(this,
-                "Deseja realmente deletar" + nome, ".:Deletar:.",
+                "Deseja realmente deletar" + nome, ".: Deletar :.",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
                 null, btnMSG, btnMSG[0]);
         if (resp == 0) {
