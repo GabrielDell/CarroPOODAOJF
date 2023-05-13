@@ -309,11 +309,6 @@ public class JFCarro extends javax.swing.JFrame {
         jlProp.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 51, 255)));
 
         jcbCombustivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Álcool", "Gasolina", "GNV", "Flex", "Diesel" }));
-        jcbCombustivel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbCombustivelActionPerformed(evt);
-            }
-        });
 
         bgCambio.add(jrbManual);
         jrbManual.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -505,6 +500,7 @@ public class JFCarro extends javax.swing.JFrame {
         } else {
             jbEditar.setEnabled(false);
             jbLimpar.setText("Limpar");
+            jbSalvar.setText("Salvar");
             limparCampos();
         }
     }//GEN-LAST:event_jbLimparActionPerformed
@@ -514,7 +510,8 @@ public class JFCarro extends javax.swing.JFrame {
         jbDeletar.setVisible(false);
         jbSalvar.setText("Confirmar");
         jbLimpar.setText("Cancelar");
-        
+        jftPlaca.setEnabled(false);
+
         int linha = jtCarros.getSelectedRow();
         String placa = (String) jtCarros.getValueAt(linha, 0);
         CarroServicos carroS = ServicosFactory.getCarroServicos();
@@ -527,15 +524,34 @@ public class JFCarro extends javax.swing.JFrame {
         jtfMarca.setText(c.getMarca());
         jtfModelo.setText(c.getModelo());
         jcbCombustivel.setSelectedItem(c.getCombustivel());
+        jlProp.setText(c.getProprietario().getNome());
+        bgCambio2 = c.getTpCambio();
+        
         if (c.getTpCambio().equalsIgnoreCase("Manual")) {
             jrbManual.setSelected(true);
-        }else{
+        } else {
             jrbAuto.setSelected(true);
         }
     }//GEN-LAST:event_jbEditarActionPerformed
 
     private void jbDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeletarActionPerformed
         // TODO add your handling code here:
+          int linha = jtCarros.getSelectedRow();
+        String placa = (String) jtCarros.getValueAt(linha, 0);
+        CarroServicos carroS = ServicosFactory.getCarroServicos();
+        String nome = carroS.getCarroByDoc(placa).getPlaca();
+        Object[] btnMSG = {"Sim","Não"};
+        int resp = JOptionPane.showOptionDialog(this,
+                "Deseja realmente deletar" + nome, ".: Deletar :.",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+                null, btnMSG, btnMSG[0]);
+        if (resp == 0) {
+            carroS.deletarCarro(placa);
+            addRowToTable();
+            JOptionPane.showMessageDialog(this, nome + "Carro deletado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Operação cancelado pelo usuário!");
+        }
     }//GEN-LAST:event_jbDeletarActionPerformed
 
     private void jtfCorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCorActionPerformed
@@ -561,18 +577,17 @@ public class JFCarro extends javax.swing.JFrame {
             int anoFab = Integer.parseInt(jtfanoFab.getText());
             int anoMod = Integer.parseInt(jtfanoMod.getText());
             String cor = jtfCor.getText().toUpperCase();
-            String cambio = bgCambio2.toUpperCase();
+            String cambio = bgCambio2;
             String combustivel = jcbCombustivel.getSelectedItem().toString();
             Pessoa proprietario = pessoaS.getPessoaByDoc(jtfProprietario.getText());
             Carro c = new Carro(placa, marca, modelo, anoFab, anoMod, cor, cambio, combustivel, proprietario);
-            carroS.cadastroCarro(c);
             if (jbSalvar.getText().equals("Salvar")) {
                 carroS.cadastroCarro(c);
             } else {
                 carroS.atualizarCarro(c);
             }
             addRowToTable();
-            limparCampos();
+            jbLimpar.doClick();
 
         }
     }//GEN-LAST:event_jbSalvarActionPerformed
@@ -656,10 +671,6 @@ public class JFCarro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jtfanoFabKeyTyped
 
-    private void jcbCombustivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbCombustivelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcbCombustivelActionPerformed
-
     private void jrbManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbManualActionPerformed
         // TODO add your handling code here:
         bgCambio2 = evt.getActionCommand();
@@ -698,16 +709,28 @@ public class JFCarro extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFCarro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFCarro.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JFCarro.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JFCarro.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JFCarro.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
